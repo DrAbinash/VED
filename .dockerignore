@@ -24,7 +24,3 @@ coverage
 .editorconfig
 .prettierrc
 .eslintrc
-docker-compose.yml
-Dockerfile
-nginx.conf
-nginx-default.conf
