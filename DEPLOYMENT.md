@@ -7,7 +7,7 @@ This is the personal portfolio website for Ved Singh, an MBBS student, traveller
 - **Synology NAS** with Docker or Container Manager installed
 - **Docker Compose** support (Synology Container Manager)
 - **Minimum 500MB** disk space
-- **Port 3009** available (or configure your preferred port)
+- **Port 3011** available (or configure your preferred port)
 - **2GB RAM** recommended
 
 ## 🚀 Deployment Steps
@@ -49,7 +49,7 @@ Edit `.env.local` to configure for your Synology setup:
 
 ```bash
 # Example configuration
-NEXT_PUBLIC_SITE_URL=http://your-nas-ip:3009
+NEXT_PUBLIC_SITE_URL=http://your-nas-ip:3011
 NODE_ENV=production
 ```
 
@@ -76,8 +76,8 @@ docker-compose ps
 ### 5. **Access the Portfolio**
 
 Open your browser and navigate to:
-- `http://your-nas-ip:3009`
-- Or `http://your-nas-hostname:3009`
+- `http://your-nas-ip:3011`
+- Or `http://your-nas-hostname:3011`
 
 ## 📊 Docker Compose Configuration
 
@@ -85,7 +85,7 @@ The `docker-compose.yml` includes:
 
 - **Container**: `ved-singh-portfolio`
 - **Image**: `ved-singh-portfolio:latest`
-- **Port**: `3009:3000` (accessible on port 3009)
+- **Port**: `3011:3000` (accessible on port 3011)
 - **Restart Policy**: `unless-stopped` (auto-restart on failure)
 - **Health Check**: Monitors container health every 30 seconds
 - **Logging**: JSON file driver with rotation (10MB max file, 3 file limit)
@@ -147,10 +147,10 @@ docker inspect ved-singh-portfolio
 docker-compose logs ved-singh-portfolio
 ```
 
-2. Verify port 3009 is not in use:
+2. Verify port 3011 is not in use:
 ```bash
 docker ps
-netstat -tuln | grep 3009
+netstat -tuln | grep 3011
 ```
 
 3. Ensure sufficient disk space:
@@ -177,7 +177,7 @@ Change the port in `docker-compose.yml`:
 
 ```yaml
 ports:
-  - "3010:3000"  # Changed from 3009 to 3010
+  - "3010:3000"  # Changed from 3011 to 3010
 ```
 
 Then restart:
@@ -277,7 +277,7 @@ For issues or questions:
 │  └──────────────────────────────────────────────┘  │
 │                                                     │
 └─────────────────────────────────────────────────────┘
-           ↓ (Port 3009)
+           ↓ (Port 3011)
     Browser/Client Access
 ```
 

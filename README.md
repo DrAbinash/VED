@@ -70,7 +70,7 @@ cd ved-singh-portfolio
 # Start the container
 docker-compose up -d
 
-# Access at http://your-nas-ip:3009
+# Access at http://your-nas-ip:3011
 ```
 
 For detailed instructions, see [QUICKSTART.md](./QUICKSTART.md)
@@ -129,7 +129,7 @@ docker-compose up -d --build
 Copy `.env.example` to `.env.local`:
 
 ```bash
-NEXT_PUBLIC_SITE_URL=http://your-domain:3009
+NEXT_PUBLIC_SITE_URL=http://your-domain:3011
 NODE_ENV=production
 ```
 
@@ -138,7 +138,7 @@ NODE_ENV=production
 ```
 User Browser
     ↓
-    ├─ http://your-nas-ip:3009
+    ├─ http://your-nas-ip:3011
     ↓
 Synology NAS (Container Manager)
     ├─ ved-singh-portfolio Container

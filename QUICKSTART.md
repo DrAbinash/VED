@@ -6,7 +6,7 @@ Get Ved Singh's portfolio running on Synology in minutes!
 
 - Synology NAS with Container Manager installed
 - SSH access or File Station
-- Port 3009 available (or edit docker-compose.yml)
+- Port 3011 available (or edit docker-compose.yml)
 
 ## 30-Second Setup
 
@@ -31,7 +31,7 @@ nano .env.local
 docker-compose build
 docker-compose up -d
 
-# 7. Done! Visit http://your-nas-ip:3009
+# 7. Done! Visit http://your-nas-ip:3011
 ```
 
 ## Verify Deployment
@@ -44,7 +44,7 @@ docker-compose ps
 docker-compose logs
 
 # Test with curl
-curl http://localhost:3009
+curl http://localhost:3011
 ```
 
 ## Common Tasks
@@ -79,7 +79,7 @@ docker-compose up -d --build
 
 | Issue | Solution |
 |-------|----------|
-| Port 3009 in use | Change port in `docker-compose.yml` |
+| Port 3011 in use | Change port in `docker-compose.yml` |
 | Container crashes | Run `docker-compose logs` to see error |
 | Slow performance | Check `docker stats` for resource usage |
 | Can't access | Verify firewall and port are open |
@@ -89,7 +89,7 @@ docker-compose up -d --build
 After deployment, check:
 
 1. ✅ Container is running: `docker-compose ps`
-2. ✅ Website loads: Visit `http://your-nas-ip:3009`
+2. ✅ Website loads: Visit `http://your-nas-ip:3011`
 3. ✅ Sections load: Home, About, Gallery, Connect
 4. ✅ Images display: Gallery images visible
 5. ✅ Links work: Instagram links, smooth scrolling
