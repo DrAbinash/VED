@@ -1,98 +1,95 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
 import { Plane, Camera, ChefHat } from "lucide-react";
-
 import { siteConfig } from "@/config/site.config";
-import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import type { LucideIcon } from "lucide-react";
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, LucideIcon> = {
   Plane,
   Camera,
   ChefHat,
 };
 
-const colorMap: Record<string, { gradient: string; iconBg: string; iconText: string; hoverBorder: string }> = {
+const colorMap: Record<string, { bg: string; icon: string; border: string; hoverBorder: string }> = {
   amber: {
-    gradient: "from-amber-50 to-amber-100/50",
-    iconBg: "bg-amber-100",
-    iconText: "text-amber-700",
-    hoverBorder: "hover:border-amber-300",
+    bg: "bg-amber-500/10",
+    icon: "text-amber-400",
+    border: "border-white/10",
+    hoverBorder: "hover:border-amber-500/30",
   },
   rose: {
-    gradient: "from-rose-50 to-rose-100/50",
-    iconBg: "bg-rose-100",
-    iconText: "text-rose-700",
-    hoverBorder: "hover:border-rose-300",
+    bg: "bg-rose-500/10",
+    icon: "text-rose-400",
+    border: "border-white/10",
+    hoverBorder: "hover:border-rose-500/30",
   },
   emerald: {
-    gradient: "from-emerald-50 to-emerald-100/50",
-    iconBg: "bg-emerald-100",
-    iconText: "text-emerald-700",
-    hoverBorder: "hover:border-emerald-300",
+    bg: "bg-emerald-500/10",
+    icon: "text-emerald-400",
+    border: "border-white/10",
+    hoverBorder: "hover:border-emerald-500/30",
   },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+  }),
 };
 
 export function Interests() {
   return (
-    <section
-      id="interests"
-      className="bg-muted/40 py-16 sm:py-20 lg:py-24"
-      aria-labelledby="interests-heading"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="interests" className="relative py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-center sm:mb-14"
         >
-          <h2
-            id="interests-heading"
-            className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-          >
-            My Interests
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-pretty text-muted-foreground">
-            Life beyond the stethoscope — the passions that keep me going.
+          <h2 className="text-3xl font-bold sm:text-4xl">What I&apos;m Into</h2>
+          <p className="mt-2 max-w-md text-muted-foreground">
+            Life beyond the classroom — the things that make me, me.
           </p>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           {siteConfig.interests.map((interest, i) => {
-            const Icon = iconMap[interest.icon] || Camera;
-            const colors = colorMap[interest.color] || colorMap.emerald;
+            const Icon = iconMap[interest.icon] || Plane;
+            const colors = colorMap[interest.color] || colorMap.amber;
 
             return (
               <motion.div
                 key={interest.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
+                custom={i}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ scale: 1.02 }}
+                className={cn(
+                  "rounded-2xl bg-white/5 border p-6 backdrop-blur-sm transition-colors duration-300",
+                  colors.border,
+                  colors.hoverBorder
+                )}
               >
-                <Card
-                  className={`group h-full border-transparent bg-background transition-all duration-300 ${colors.hoverBorder} hover:shadow-lg`}
+                <div
+                  className={cn(
+                    "inline-flex size-12 items-center justify-center rounded-xl",
+                    colors.bg
+                  )}
                 >
-                  <CardContent className="flex h-full flex-col p-6">
-                    <div
-                      className={`mb-4 inline-flex size-12 items-center justify-center rounded-xl ${colors.iconBg} ${colors.iconText} transition-transform duration-300 group-hover:scale-110`}
-                    >
-                      <Icon className="size-6" />
-                    </div>
-                    <h3 className="text-lg font-bold text-foreground">
-                      {interest.title}
-                    </h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                      {interest.description}
-                    </p>
-                    <div
-                      className={`mt-4 h-1 w-10 rounded-full bg-gradient-to-r ${colors.gradient} transition-all duration-300 group-hover:w-16`}
-                    />
-                  </CardContent>
-                </Card>
+                  <Icon className={cn("size-6", colors.icon)} />
+                </div>
+                <h3 className="mt-4 text-xl font-semibold">{interest.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {interest.description}
+                </p>
               </motion.div>
             );
           })}

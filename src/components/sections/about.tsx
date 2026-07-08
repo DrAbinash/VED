@@ -1,126 +1,69 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight, Instagram, ChefHat } from "lucide-react";
-
+import { GraduationCap, Stethoscope, MapPin } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 
 export function About() {
   return (
-    <section
-      id="about"
-      className="bg-background py-16 sm:py-20 lg:py-24"
-      aria-labelledby="about-heading"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Photo */}
+    <section id="about" className="relative py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto w-full max-w-md"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="absolute -inset-3 -z-10 rounded-3xl bg-emerald-100" />
-            <div className="overflow-hidden rounded-3xl border-4 border-white bg-emerald-50 shadow-xl">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl ring-2 ring-primary/20">
               <img
                 src={siteConfig.person.aboutPhoto}
-                alt={`${siteConfig.person.name}, ${siteConfig.person.title}`}
-                className="aspect-[4/5] w-full object-cover"
-                loading="lazy"
+                alt="Ved Singh"
+                className="h-full w-full object-cover"
               />
-            </div>
-            <div className="absolute -bottom-5 -right-3 rounded-2xl border border-border bg-background p-4 shadow-lg sm:-right-5">
-              <div className="text-2xl font-extrabold text-emerald-700">
-                5.5
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Years of Medicine
-              </p>
+              {/* Subtle teal glow behind image */}
+              <div className="absolute -inset-4 -z-10 rounded-2xl bg-primary/10 blur-3xl" />
             </div>
           </motion.div>
 
-          {/* Content */}
+          {/* Text */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="flex flex-col gap-5"
           >
-            <Badge
-              variant="secondary"
-              className="mb-3 bg-emerald-100 text-emerald-800"
-            >
-              About Ved
-            </Badge>
-            <h2
-              id="about-heading"
-              className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-            >
-              {siteConfig.person.name}
-            </h2>
-            <p className="mt-2 text-lg font-semibold text-emerald-800">
-              {siteConfig.person.title}
-            </p>
+            <span className="text-sm font-medium uppercase tracking-widest text-primary">
+              About Me
+            </span>
 
-            <div className="mt-5 space-y-4 text-muted-foreground">
+            <h2 className="text-3xl font-bold sm:text-4xl">The Story So Far</h2>
+
+            {/* College badge */}
+            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-white/5 border border-white/10 px-4 py-2 text-sm text-muted-foreground backdrop-blur-sm">
+              <GraduationCap className="size-4 text-primary" />
+              {siteConfig.person.college}
+            </div>
+
+            {/* Bio paragraphs */}
+            <div className="flex flex-col gap-4 text-muted-foreground leading-relaxed">
               {siteConfig.person.longBio.map((para, i) => (
-                <p key={i} className="text-pretty leading-relaxed">
-                  {para}
-                </p>
+                <p key={i}>{para}</p>
               ))}
             </div>
 
-            <Card className="mt-6 border-emerald-100 bg-emerald-50/50">
-              <CardContent className="py-4">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-emerald-800">
-                  Qualifications &amp; Training
-                </p>
-                <ul className="grid gap-2 sm:grid-cols-2">
-                  {["MBBS — Dr. D. Y. Patil Medical College, Pune"].map(
-                    (q) => (
-                      <li
-                        key={q}
-                        className="flex items-start gap-2 text-sm text-foreground"
-                      >
-                        <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" />
-                        <span>{q}</span>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </CardContent>
-            </Card>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button
-                asChild
-                className="bg-emerald-700 hover:bg-emerald-800"
-              >
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <Instagram className="size-4" />
-                  Follow @vedawsm
-                  <ArrowRight className="size-4" />
-                </a>
-              </Button>
-              <Button asChild variant="outline">
-                <a
-                  href={siteConfig.social.foodInstagram}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <ChefHat className="size-4 text-red-600" />
-                  Food by Ved
-                </a>
-              </Button>
+            {/* Info cards */}
+            <div className="mt-2 flex flex-wrap gap-3">
+              <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
+                <Stethoscope className="size-4 text-primary" />
+                <span className="text-sm font-medium">MBBS</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
+                <MapPin className="size-4 text-primary" />
+                <span className="text-sm font-medium">Pune</span>
+              </div>
             </div>
           </motion.div>
         </div>

@@ -1,159 +1,140 @@
 "use client";
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import { Camera, X, ChevronLeft, ChevronRight } from "lucide-react";
-
 import { siteConfig } from "@/config/site.config";
 
 export function Gallery() {
-  const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
-
-  const images = siteConfig.gallery;
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     if (lightboxIndex === null) return;
-    setLightboxIndex((lightboxIndex + 1) % images.length);
-  };
+    setLightboxIndex((lightboxIndex + 1) % siteConfig.gallery.length);
+  }, [lightboxIndex]);
 
-  const goPrev = () => {
+  const goPrev = useCallback(() => {
     if (lightboxIndex === null) return;
-    setLightboxIndex((lightboxIndex - 1 + images.length) % images.length);
-  };
+    setLightboxIndex(
+      (lightboxIndex - 1 + siteConfig.gallery.length) % siteConfig.gallery.length
+    );
+  }, [lightboxIndex]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (lightboxIndex === null) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (lightboxIndex === null) return;
       if (e.key === "Escape") closeLightbox();
       if (e.key === "ArrowRight") goNext();
       if (e.key === "ArrowLeft") goPrev();
     };
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  });
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightboxIndex, goNext, goPrev]);
 
   return (
-    <section
-      id="gallery"
-      className="bg-background py-16 sm:py-20 lg:py-24"
-      aria-labelledby="gallery-heading"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="gallery" className="relative py-24 sm:py-32">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-center sm:mb-14"
         >
-          <h2
-            id="gallery-heading"
-            className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-          >
-            Gallery
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-pretty text-muted-foreground">
-            A curated collection of moments captured through my lens — travels,
-            food, and life in between.
+          <div className="flex items-center gap-3">
+            <Camera className="size-6 text-primary" />
+            <h2 className="text-3xl font-bold sm:text-4xl">Through My Lens</h2>
+          </div>
+          <p className="mt-2 max-w-md text-muted-foreground">
+            Moments captured across travels, kitchens, and everyday life.
           </p>
         </motion.div>
 
-        {/* Masonry Grid */}
-        <div className="grid grid-cols-2 gap-3 auto-rows-[180px] md:grid-cols-4 md:gap-4 md:auto-rows-[200px]">
-          {images.map((img, i) => (
-            <motion.div
+        {/* Masonry grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-12 grid auto-rows-[200px] grid-cols-2 gap-3 md:auto-rows-[220px] md:grid-cols-4"
+        >
+          {siteConfig.gallery.map((item, i) => (
+            <div
               key={i}
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-20px" }}
-              transition={{ duration: 0.35, delay: i * 0.04 }}
-              className={`group relative cursor-pointer overflow-hidden rounded-xl ${img.span}`}
+              className={`gallery-item group relative cursor-pointer ${item.span}`}
               onClick={() => openLightbox(i)}
             >
               <img
-                src={img.src}
-                alt={img.alt}
-                className="size-full object-cover transition-transform duration-500 group-hover:scale-110"
+                src={item.src}
+                alt={item.alt}
+                className="h-full w-full rounded-xl object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/40" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <div className="flex size-12 items-center justify-center rounded-full bg-white/90 text-emerald-700 shadow-lg backdrop-blur-sm">
-                  <Camera className="size-5" />
-                </div>
+              <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/0 transition-colors duration-300 group-hover:bg-black/40">
+                <Camera className="size-6 text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               </div>
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxIndex !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+      {lightboxIndex !== null && (
+        <div
+          className="lightbox-overlay fixed inset-0 z-[60] flex items-center justify-center bg-black/80"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
             onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white/80 transition-colors hover:bg-white/20 hover:text-white"
+            aria-label="Close lightbox"
           >
-            {/* Close button */}
-            <button
-              onClick={closeLightbox}
-              aria-label="Close lightbox"
-              className="absolute right-4 top-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-            >
-              <X className="size-5" />
-            </button>
+            <X className="size-5" />
+          </button>
 
-            {/* Image counter */}
-            <div className="absolute left-4 top-4 z-10 rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
-              {lightboxIndex + 1} / {images.length}
-            </div>
+          {/* Nav buttons */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              goPrev();
+            }}
+            className="absolute left-4 z-10 rounded-full bg-white/10 p-2 text-white/80 transition-colors hover:bg-white/20 hover:text-white"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="size-6" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              goNext();
+            }}
+            className="absolute right-4 z-10 rounded-full bg-white/10 p-2 text-white/80 transition-colors hover:bg-white/20 hover:text-white"
+            aria-label="Next image"
+          >
+            <ChevronRight className="size-6" />
+          </button>
 
-            {/* Prev button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                goPrev();
-              }}
-              aria-label="Previous image"
-              className="absolute left-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-            >
-              <ChevronLeft className="size-5" />
-            </button>
+          {/* Image */}
+          <img
+            src={siteConfig.gallery[lightboxIndex].src}
+            alt={siteConfig.gallery[lightboxIndex].alt}
+            className="max-h-[85vh] max-w-[90vw] rounded-xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
 
-            {/* Image */}
-            <motion.img
-              key={lightboxIndex}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              src={images[lightboxIndex].src}
-              alt={images[lightboxIndex].alt}
-              className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-
-            {/* Next button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                goNext();
-              }}
-              aria-label="Next image"
-              className="absolute right-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-colors hover:bg-white/20"
-            >
-              <ChevronRight className="size-5" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Counter */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-sm text-white/60">
+            {lightboxIndex + 1} / {siteConfig.gallery.length}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

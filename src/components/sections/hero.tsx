@@ -1,214 +1,143 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
-import {
-  Instagram,
-  ChefHat,
-  MapPin,
-  Camera,
-  GraduationCap,
-  Heart,
-} from "lucide-react";
-
-import { siteConfig } from "@/config/site.config";
+import { Stethoscope, MapPin, Camera, Plane, ChevronDown, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { siteConfig } from "@/config/site.config";
 
-const trustItems = [
-  { icon: GraduationCap, label: "MBBS Student" },
-  { icon: MapPin, label: "Pune, Maharashtra" },
-  { icon: Heart, label: "Passionate Creator" },
-];
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+  }),
+};
 
 export function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-radial-emerald"
-      aria-labelledby="hero-heading"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
-      {/* Decorative grid */}
-      <div className="absolute inset-0 bg-grid opacity-60" aria-hidden="true" />
-      <div
-        className="absolute -top-24 -right-24 size-72 rounded-full bg-emerald-200/40 blur-3xl"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-32 -left-24 size-80 rounded-full bg-emerald-100/60 blur-3xl"
-        aria-hidden="true"
-      />
-
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 md:py-16 lg:px-8 lg:py-24">
-        {/* Left: text */}
-        <div className="order-2 md:order-1">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Badge
-              variant="secondary"
-              className="mb-4 gap-1.5 bg-emerald-100 text-emerald-800"
-            >
-              <span className="size-1.5 rounded-full bg-emerald-600" />
-              {siteConfig.person.college}
-            </Badge>
-          </motion.div>
-
-          <motion.h1
-            id="hero-heading"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05 }}
-            className="text-balance text-4xl font-extrabold leading-tight tracking-tight text-foreground sm:text-5xl lg:text-6xl"
-          >
-            {siteConfig.person.name}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-3 text-lg font-semibold text-emerald-800 sm:text-xl"
-          >
-            {siteConfig.person.title}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-4 flex flex-wrap gap-2"
-          >
-            <Badge
-              variant="outline"
-              className="border-emerald-200 bg-white/70 text-emerald-900"
-            >
-              MBBS
-            </Badge>
-            <Badge
-              variant="outline"
-              className="border-emerald-200 bg-white/70 text-emerald-900"
-            >
-              Dr. D. Y. Patil Medical College
-            </Badge>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-5 max-w-xl text-pretty text-base text-muted-foreground sm:text-lg"
-          >
-            {siteConfig.person.tagline}. {siteConfig.person.shortBio}
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.25 }}
-            className="mt-7 flex flex-col gap-3 sm:flex-row"
-          >
-            <Button
-              asChild
-              size="lg"
-              className="bg-emerald-700 text-white hover:bg-emerald-800"
-            >
-              <a
-                href={siteConfig.social.instagram}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Instagram className="size-4" />
-                Follow @vedawsm
-              </a>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <a
-                href={siteConfig.social.foodInstagram}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <ChefHat className="size-4 text-red-600" />
-                Food by Ved
-              </a>
-            </Button>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2"
-          >
-            {trustItems.map((t) => (
-              <div
-                key={t.label}
-                className="flex items-center gap-1.5 text-xs font-medium text-emerald-900/80 sm:text-sm"
-              >
-                <t.icon className="size-4 text-emerald-700" />
-                {t.label}
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Right: hero image with floating cards */}
-        <div className="relative order-1 md:order-2">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative mx-auto max-w-md md:max-w-none"
-          >
-            <div className="relative overflow-hidden rounded-3xl border border-emerald-100 bg-white shadow-2xl shadow-emerald-900/10">
-              <img
-                src={siteConfig.person.heroPhoto}
-                alt={`${siteConfig.person.name}, ${siteConfig.person.title}`}
-                className="aspect-[4/5] w-full object-cover sm:aspect-[5/4] md:aspect-[4/5]"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/40 via-transparent to-transparent" />
-            </div>
-
-            {/* Floating stat card top-left */}
-            <motion.div
-              initial={{ opacity: 0, x: -20, y: -10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="absolute -left-4 top-6 hidden rounded-2xl border border-border/60 bg-background/95 p-4 shadow-xl backdrop-blur-sm sm:block"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
-                  <Camera className="size-5" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Photography</p>
-                  <p className="text-sm font-semibold text-foreground">
-                    5,000+ Photos
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Floating stat card bottom-right */}
-            <motion.div
-              initial={{ opacity: 0, x: 20, y: 10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="absolute -right-4 bottom-6 hidden rounded-2xl border border-border/60 bg-background/95 p-4 shadow-xl backdrop-blur-sm sm:block"
-            >
-              <p className="text-2xl font-extrabold text-emerald-700">
-                15<span className="text-base align-top">+</span>
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Places Explored
-              </p>
-            </motion.div>
-          </motion.div>
-        </div>
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src={siteConfig.person.heroPhoto}
+          alt="Ved Singh"
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
       </div>
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-32 text-center sm:px-6 lg:px-8">
+        {/* College badge */}
+        <motion.div
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-foreground/80 backdrop-blur-sm border border-white/10"
+        >
+          <Stethoscope className="size-3.5 text-primary" />
+          {siteConfig.person.college}
+        </motion.div>
+
+        {/* Name */}
+        <motion.h1
+          custom={1}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="gradient-text text-6xl font-black uppercase tracking-tighter sm:text-7xl md:text-8xl lg:text-9xl"
+        >
+          {siteConfig.person.name}
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          custom={2}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground sm:text-xl"
+        >
+          {siteConfig.person.tagline}
+        </motion.p>
+
+        {/* CTA buttons */}
+        <motion.div
+          custom={3}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-8 flex flex-wrap items-center justify-center gap-3"
+        >
+          <Button size="lg" asChild className="rounded-full px-6">
+            <a href="#about">Explore My World</a>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            asChild
+            className="rounded-full px-6 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300 hover:border-red-500/50"
+          >
+            <a
+              href={siteConfig.social.foodInstagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <ChefHat className="size-4" />
+              @food_ved_
+            </a>
+          </Button>
+        </motion.div>
+
+        {/* Trust row */}
+        <motion.div
+          custom={4}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground sm:text-sm"
+        >
+          <span className="flex items-center gap-1.5">
+            <MapPin className="size-3.5 text-primary" />
+            Pune
+          </span>
+          <span className="hidden sm:block w-px h-3 bg-white/20" />
+          <span className="flex items-center gap-1.5">
+            <Camera className="size-3.5 text-primary" />
+            5,000+ Photos
+          </span>
+          <span className="hidden sm:block w-px h-3 bg-white/20" />
+          <span className="flex items-center gap-1.5">
+            <Plane className="size-3.5 text-primary" />
+            15+ Places
+          </span>
+        </motion.div>
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <motion.a
+          href="#about"
+          className="flex flex-col items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          aria-label="Scroll down"
+        >
+          <ChevronDown className="size-5" />
+        </motion.a>
+      </motion.div>
     </section>
   );
 }

@@ -1,115 +1,76 @@
 "use client";
 
-import * as React from "react";
 import { motion } from "framer-motion";
-import { Instagram, Camera, ChefHat, ArrowUpRight } from "lucide-react";
-
+import { Camera, ChefHat, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
-import { Card, CardContent } from "@/components/ui/card";
 
 export function Connect() {
   return (
-    <section
-      id="connect"
-      className="bg-muted/40 py-16 sm:py-20 lg:py-24"
-      aria-labelledby="connect-heading"
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="connect" className="relative py-24 sm:py-32">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
+          viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-center sm:mb-14"
+          className="text-center"
         >
-          <h2
-            id="connect-heading"
-            className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl"
-          >
-            Let&apos;s Connect
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-pretty text-muted-foreground">
-            Follow me on Instagram for travel diaries, photography, and my
-            culinary experiments.
+          <h2 className="text-3xl font-bold sm:text-4xl">Let&apos;s Connect</h2>
+          <p className="mx-auto mt-2 max-w-md text-muted-foreground">
+            Follow along on my journey — through cities, through frames, through flavours.
           </p>
         </motion.div>
 
-        <div className="mx-auto grid max-w-3xl gap-6 sm:grid-cols-2">
-          {/* @vedawsm card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {/* Travel & Photography card */}
+          <motion.a
+            href={siteConfig.social.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.4, delay: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6 }}
+            whileHover={{ scale: 1.02 }}
+            className="glow-teal group relative flex flex-col rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-colors hover:border-primary/30"
           >
-            <Card className="group h-full border-emerald-100 bg-background transition-all duration-300 hover:border-emerald-300 hover:shadow-lg">
-              <CardContent className="flex h-full flex-col items-center p-6 text-center">
-                <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 transition-transform duration-300 group-hover:scale-110">
-                  <Camera className="size-7" />
-                </div>
-                <div className="mb-1 flex items-center gap-1.5">
-                  <Instagram className="size-4 text-emerald-700" />
-                  <span className="text-base font-bold text-foreground">
-                    @vedawsm
-                  </span>
-                </div>
-                <p className="mb-4 text-sm font-medium text-emerald-700">
-                  Travel &amp; Photography
-                </p>
-                <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
-                  Solo travel stories and the world through my lens — golden
-                  hours, mountain passes, and the beauty of everyday life.
-                </p>
-                <a
-                  href={siteConfig.social.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 transition-colors hover:text-emerald-800"
-                >
-                  View Profile
-                  <ArrowUpRight className="size-4" />
-                </a>
-              </CardContent>
-            </Card>
-          </motion.div>
+            <div className="inline-flex size-12 items-center justify-center rounded-xl bg-primary/10">
+              <Camera className="size-6 text-primary" />
+            </div>
+            <h3 className="mt-5 text-2xl font-bold">@vedawsm</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Travel &amp; Photography</p>
+            <div className="mt-auto pt-6">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors group-hover:gap-3">
+                View Profile
+                <ArrowRight className="size-4" />
+              </span>
+            </div>
+          </motion.a>
 
-          {/* @food_ved_ card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+          {/* Food & Cooking card */}
+          <motion.a
+            href={siteConfig.social.foodInstagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            whileHover={{ scale: 1.02 }}
+            className="glow-red group relative flex flex-col rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-colors hover:border-red-500/30"
           >
-            <Card className="group h-full border-red-100 bg-background transition-all duration-300 hover:border-red-300 hover:shadow-lg">
-              <CardContent className="flex h-full flex-col items-center p-6 text-center">
-                <div className="mb-4 flex size-14 items-center justify-center rounded-2xl bg-red-100 text-red-600 transition-transform duration-300 group-hover:scale-110">
-                  <ChefHat className="size-7" />
-                </div>
-                <div className="mb-1 flex items-center gap-1.5">
-                  <Instagram className="size-4 text-red-600" />
-                  <span className="text-base font-bold text-foreground">
-                    @food_ved_
-                  </span>
-                </div>
-                <p className="mb-4 text-sm font-medium text-red-600">
-                  Food &amp; Cooking
-                </p>
-                <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
-                  Culinary experiments from a med student&apos;s kitchen — where
-                  nutrition knowledge meets creative cooking.
-                </p>
-                <a
-                  href={siteConfig.social.foodInstagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700"
-                >
-                  View Profile
-                  <ArrowUpRight className="size-4" />
-                </a>
-              </CardContent>
-            </Card>
-          </motion.div>
+            <div className="inline-flex size-12 items-center justify-center rounded-xl bg-red-500/10">
+              <ChefHat className="size-6 text-red-500" />
+            </div>
+            <h3 className="mt-5 text-2xl font-bold">@food_ved_</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Food &amp; Cooking</p>
+            <div className="mt-auto pt-6">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-red-400 transition-colors group-hover:gap-3">
+                View Profile
+                <ArrowRight className="size-4" />
+              </span>
+            </div>
+          </motion.a>
         </div>
       </div>
     </section>

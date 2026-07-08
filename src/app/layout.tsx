@@ -8,26 +8,26 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.person.name} — ${siteConfig.person.title} | ${siteConfig.person.college}`,
+  title: `${siteConfig.person.name} — ${siteConfig.person.tagline}`,
   description: siteConfig.person.shortBio,
-  keywords: ["Ved Singh", "MBBS", "Doctor", "Photography", "Solo Travelling", "Cooking", "Pune", "Dr D Y Patil Medical College"],
+  keywords: ["Ved Singh", "MBBS", "Solo Travelling", "Photography", "Cooking", "Pune", "Dr D Y Patil"],
   authors: [{ name: siteConfig.person.name }],
   icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   openGraph: {
-    title: `${siteConfig.person.name} — ${siteConfig.person.title}`,
+    title: `${siteConfig.person.name} — ${siteConfig.person.tagline}`,
     description: siteConfig.person.shortBio,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.person.name} — ${siteConfig.person.title}`,
+    title: `${siteConfig.person.name} — ${siteConfig.person.tagline}`,
     description: siteConfig.person.shortBio,
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: siteConfig.theme.primary,
+  themeColor: "#0a0a0f",
   width: "device-width",
   initialScale: 1,
 };
