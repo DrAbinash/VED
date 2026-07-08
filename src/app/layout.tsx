@@ -1,42 +1,35 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { siteConfig } from "@/config/site.config";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ved Singh — Aspiring Doctor | Traveller | Photographer | Chef",
-  description:
-    "Personal portfolio of Ved Singh, a final year MBBS student at Dr. D. Y. Patil Medical College, Pune. Passionate about solo travelling, photography, and cooking.",
-  keywords: [
-    "Ved Singh",
-    "MBBS",
-    "Doctor",
-    "Photography",
-    "Travelling",
-    "Cooking",
-    "Pune",
-  ],
-  icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩺</text></svg>",
-  },
+  title: `${siteConfig.person.name} — ${siteConfig.person.title} | ${siteConfig.person.college}`,
+  description: siteConfig.person.shortBio,
+  keywords: ["Ved Singh", "MBBS", "Doctor", "Photography", "Solo Travelling", "Cooking", "Pune", "Dr D Y Patil Medical College"],
+  authors: [{ name: siteConfig.person.name }],
+  icons: { icon: "/favicon.svg", apple: "/favicon.svg" },
   openGraph: {
-    title: "Ved Singh — Aspiring Doctor | Traveller | Photographer | Chef",
-    description:
-      "Personal portfolio of Ved Singh, a final year MBBS student at Dr. D. Y. Patil Medical College, Pune.",
+    title: `${siteConfig.person.name} — ${siteConfig.person.title}`,
+    description: siteConfig.person.shortBio,
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.person.name} — ${siteConfig.person.title}`,
+    description: siteConfig.person.shortBio,
+  },
+  robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: siteConfig.theme.primary,
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -46,9 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${playfair.variable} ${inter.variable} antialiased bg-background text-foreground`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
         {children}
         <Toaster />
       </body>
