@@ -1,4 +1,5 @@
 services:
+<<<<<<< HEAD
   ved-singh-portfolio:
     container_name: ved-singh-portfolio
     build: .
@@ -13,6 +14,19 @@ services:
       - ved-portfolio-logs:/var/log/nginx
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+=======
+  ved-website:
+    container_name: ved-website
+    build: .
+    image: ved-portfolio:latest
+    restart: unless-stopped
+    ports:
+      - "3010:3000"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+>>>>>>> 1d7a31f175001591b8b20f58c3f61d3ae4aca124
       interval: 30s
       timeout: 10s
       retries: 3
@@ -21,6 +35,7 @@ services:
       driver: json-file
       options:
         max-size: "10m"
+<<<<<<< HEAD
         max-file: "3"
     networks:
       - ved-network
@@ -35,3 +50,6 @@ networks:
     ipam:
       config:
         - subnet: 10.0.99.0/24
+=======
+        max-file: "3"
+>>>>>>> 1d7a31f175001591b8b20f58c3f61d3ae4aca124
