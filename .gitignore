@@ -67,3 +67,7 @@ server.log
 
 # Database
 db/*/@eaDir/
+
+# Synology metadata
+@eaDir/
+**/@eaDir/
