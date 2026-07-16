@@ -33,8 +33,14 @@ export function Footer() {
           </a>
         </div>
 
-        <p className="mt-6 text-xs text-muted-foreground">
-          Made with ♥ by family
+        <p className="mt-6 flex items-center justify-center gap-3 text-xs text-muted-foreground">
+          <span>Made with ♥ by family</span>
+          <a
+            href="/admin"
+            className="text-muted-foreground/60 underline-offset-2 transition-colors hover:text-foreground hover:underline"
+          >
+            Manage photos
+          </a>
         </p>
       </div>
     </footer>

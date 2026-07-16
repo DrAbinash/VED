@@ -30,3 +30,10 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+// Stores the admin-edited "My Work" collections (photography & foods)
+// as a single JSON blob. One row only, id = "work". Edited from /admin.
+model SiteSetting {
+  id        String   @id
+  json      String
+  updatedAt DateTime @updatedAt
+}

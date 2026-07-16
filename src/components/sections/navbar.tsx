@@ -34,7 +34,7 @@ export function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
-        <a href="#home" className="flex items-center gap-0.5">
+        <a href="/#home" className="flex items-center gap-0.5">
           <span className="text-2xl font-black uppercase tracking-tighter text-foreground">
             VED
           </span>
@@ -103,7 +103,7 @@ export function Navbar() {
             <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
             <div className="flex flex-col gap-2 pt-8">
               <a
-                href="#home"
+                href="/#home"
                 className="flex items-center gap-0.5 mb-4"
               >
                 <span className="text-2xl font-black uppercase tracking-tighter text-foreground">

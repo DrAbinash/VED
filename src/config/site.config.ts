@@ -116,13 +116,15 @@ export const siteConfig = {
     linkedin: "",
     twitter: "",
   },
+  // "/#..." links work from every page (including /photography and /foods).
   nav: [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Journey", href: "#journey" },
-    { label: "Interests", href: "#interests" },
-    { label: "Gallery", href: "#gallery" },
-    { label: "Connect", href: "#connect" },
+    { label: "Home", href: "/#home" },
+    { label: "About", href: "/#about" },
+    { label: "Journey", href: "/#journey" },
+    { label: "Interests", href: "/#interests" },
+    { label: "My Work", href: "/#work" },
+    { label: "Gallery", href: "/#gallery" },
+    { label: "Connect", href: "/#connect" },
   ],
   theme: { primary: "#0d9488", primaryDark: "#0f766e", accent: "#dc2626" },
 } as const;

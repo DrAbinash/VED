@@ -4,13 +4,16 @@ import { Stats } from "@/components/sections/stats";
 import { About } from "@/components/sections/about";
 import { Journey } from "@/components/sections/journey";
 import { Interests } from "@/components/sections/interests";
+import { MyWork } from "@/components/sections/my-work";
 import { Gallery } from "@/components/sections/gallery";
 import { Connect } from "@/components/sections/connect";
 import { Footer } from "@/components/sections/footer";
 import { FloatingCta } from "@/components/sections/floating-cta";
 import { ScrollProgress } from "@/components/scroll-progress";
+import { getWorkConfig } from "@/lib/work";
 
-export default function Home() {
+export default async function Home() {
+  const work = await getWorkConfig();
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <ScrollProgress />
@@ -21,6 +24,7 @@ export default function Home() {
         <About />
         <Journey />
         <Interests />
+        <MyWork work={work} />
         <Gallery />
         <Connect />
       </main>
