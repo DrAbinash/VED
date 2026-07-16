@@ -2,7 +2,7 @@ export const siteConfig = {
   person: {
     name: "Ved Singh",
     title: "Final Year MBBS Student",
-    tagline: "Aspiring Doctor · Traveller · Photographer · Chef",
+    tagline: "Future Doctor · Traveller · Photographer · Chef",
     shortBio:
       "Final year MBBS student at Dr. D. Y. Patil Medical College, Pune. Passionate about solo travelling, photography, and cooking — exploring the world one frame and one flavour at a time.",
     longBio: [
@@ -10,11 +10,63 @@ export const siteConfig = {
       "Beyond the walls of the hospital, I wear many hats. I'm a solo traveller who finds solace in the mountains and wisdom in the streets of unknown cities. Through my camera lens, I capture the poetry of everyday life — the golden hours, the candid smiles, the quiet moments that most people walk past.",
       "In the kitchen, I express my creativity through flavours, experimenting with recipes that nourish both body and soul. As a future doctor, understanding nutrition is second nature, but cooking is where that knowledge becomes art.",
     ],
-    heroPhoto: "/gallery/WhatsApp Image 2026-07-08 at 15.08.45.jpeg",
-    aboutPhoto: "/gallery/WhatsApp Image 2026-07-08 at 15.08.46 (1).jpeg",
+    heroPhoto: "/gallery/ved-01.jpeg",
+    aboutPhoto: "/gallery/ved-05.jpeg",
     college: "Dr. D. Y. Patil Medical College, Pune",
     location: "Pune, Maharashtra, India",
+    age: 23,
   },
+  /** The road from medical student to doctor — shown as a glowing timeline. */
+  journey: [
+    {
+      stage: "The Beginning",
+      title: "The White Coat Journey Begins",
+      description:
+        "Cracked NEET and walked into Dr. D. Y. Patil Medical College, Pune — one stethoscope, endless dreams.",
+      icon: "GraduationCap",
+      status: "done",
+    },
+    {
+      stage: "Pre-Clinical Years",
+      title: "Learning the Human Body",
+      description:
+        "Anatomy, physiology, biochemistry — the alphabet of medicine, learned one dissection and one all-nighter at a time.",
+      icon: "BookOpen",
+      status: "done",
+    },
+    {
+      stage: "Clinical Years",
+      title: "First Patients, Real Medicine",
+      description:
+        "From textbooks to hospital wards — histories, examinations, and the first thank-you from a patient that made it all worth it.",
+      icon: "Stethoscope",
+      status: "done",
+    },
+    {
+      stage: "Now",
+      title: "Final Year MBBS",
+      description:
+        "The last and toughest lap — medicine, surgery, obstetrics, paediatrics. Eyes on the finish line.",
+      icon: "Activity",
+      status: "current",
+    },
+    {
+      stage: "Next",
+      title: "Internship",
+      description:
+        "A year of rotations across every department — where knowledge becomes instinct.",
+      icon: "ClipboardCheck",
+      status: "upcoming",
+    },
+    {
+      stage: "The Dream",
+      title: "Dr. Ved Singh, M.B.B.S.",
+      description:
+        "The white coat, earned. And after that? The journey has only just begun.",
+      icon: "Award",
+      status: "dream",
+    },
+  ],
   interests: [
     {
       icon: "Plane",
@@ -39,22 +91,22 @@ export const siteConfig = {
     },
   ],
   gallery: [
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.45.jpeg", alt: "Travel moment", span: "col-span-2 row-span-2" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.45 (1).jpeg", alt: "Adventures", span: "col-span-1 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.45 (2).jpeg", alt: "Exploring new places", span: "col-span-1 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.46.jpeg", alt: "Photography capture", span: "col-span-1 row-span-2" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.46 (1).jpeg", alt: "Beautiful scenery", span: "col-span-2 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.47.jpeg", alt: "Cooking creation", span: "col-span-1 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.47 (2).jpeg", alt: "Culinary art", span: "col-span-1 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.47 (3).jpeg", alt: "Food photography", span: "col-span-2 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.48.jpeg", alt: "Life in frames", span: "col-span-1 row-span-1" },
-    { src: "/gallery/WhatsApp Image 2026-07-08 at 15.08.48 (2).jpeg", alt: "Captured moments", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-01.jpeg", alt: "Ved on a boat among island cliffs, arms wide open", span: "col-span-2 row-span-2" },
+    { src: "/gallery/ved-02.jpeg", alt: "Travel adventures", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-03.jpeg", alt: "Exploring new places", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-04.jpeg", alt: "Photography capture", span: "col-span-1 row-span-2" },
+    { src: "/gallery/ved-05.jpeg", alt: "Street-art moment with family", span: "col-span-2 row-span-1" },
+    { src: "/gallery/ved-06.jpeg", alt: "Cooking creation", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-07.jpeg", alt: "Culinary art", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-08.jpeg", alt: "Food photography", span: "col-span-2 row-span-1" },
+    { src: "/gallery/ved-09.jpeg", alt: "Life in frames", span: "col-span-1 row-span-1" },
+    { src: "/gallery/ved-10.jpeg", alt: "Captured moments", span: "col-span-1 row-span-1" },
   ],
   stats: [
     { label: "Places Explored", value: 15, suffix: "+" },
     { label: "Photos Captured", value: 5000, suffix: "+" },
     { label: "Recipes Tried", value: 200, suffix: "+" },
-    { label: "MBBS Final Year", value: 5, suffix: ".5 yrs" },
+    { label: "Years of MBBS", value: 5, suffix: "+" },
   ],
   social: {
     instagram: "https://www.instagram.com/vedawsm/",
@@ -67,6 +119,7 @@ export const siteConfig = {
   nav: [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
+    { label: "Journey", href: "#journey" },
     { label: "Interests", href: "#interests" },
     { label: "Gallery", href: "#gallery" },
     { label: "Connect", href: "#connect" },
