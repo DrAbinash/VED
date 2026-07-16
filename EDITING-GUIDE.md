@@ -1,6 +1,23 @@
 # How to Edit Ved's Website
 
-Everything is controlled by **one file**: `src/config/site.config.ts`. Change a value, rebuild, done.
+> **New: My Work photo manager — no rebuild needed**
+>
+> Ved's Photography and Foods pages have their own easy photo manager at
+> **`/admin`** (there's a small "Manage photos" link in the website footer).
+> Log in with the admin password (temporary: `ved2026` — set your own with
+> `ADMIN_PASSWORD` in docker-compose.yml), then:
+>
+> - **Add photos** — pick one or MANY at once; they upload automatically.
+> - Add optional captions, reorder with the arrows, or remove photos.
+> - Choose the layout per page: **Auto (flowing mosaic)** or **Square grid**
+>   — both fill the page completely with no blank gaps.
+> - Edit each page's title and intro line.
+> - Press **Save changes**, then refresh the page — done.
+>
+> Photos and settings are stored in the `ved-portfolio-data` Docker volume,
+> so they survive updates and rebuilds.
+
+Everything else is controlled by **one file**: `src/config/site.config.ts`. Change a value, rebuild, done.
 
 ---
 

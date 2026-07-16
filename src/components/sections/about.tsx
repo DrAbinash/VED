@@ -14,9 +14,9 @@ export function About() {
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }}
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl ring-2 ring-primary/20">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-2 ring-primary/20 lg:aspect-[4/5] lg:[&_img]:object-[70%_center]">
               <img
                 src={siteConfig.person.aboutPhoto}
                 alt="Ved Singh"
@@ -32,7 +32,7 @@ export function About() {
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }}
             className="flex flex-col gap-5"
           >
             <span className="text-sm font-medium uppercase tracking-widest text-primary">
@@ -58,11 +58,15 @@ export function About() {
             <div className="mt-2 flex flex-wrap gap-3">
               <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
                 <Stethoscope className="size-4 text-primary" />
-                <span className="text-sm font-medium">MBBS</span>
+                <span className="text-sm font-medium">MBBS — Final Year</span>
               </div>
               <div className="flex items-center gap-2 rounded-xl bg-white/5 border border-white/10 px-4 py-3 backdrop-blur-sm">
                 <MapPin className="size-4 text-primary" />
                 <span className="text-sm font-medium">Pune</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-xl bg-primary/10 border border-primary/25 px-4 py-3 backdrop-blur-sm">
+                <GraduationCap className="size-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Dr. in the making</span>
               </div>
             </div>
           </motion.div>

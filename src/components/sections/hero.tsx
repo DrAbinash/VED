@@ -10,7 +10,7 @@ const fadeUp = {
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { delay: i * 0.15, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const },
   }),
 };
 
@@ -76,7 +76,7 @@ export function Hero() {
           className="mt-8 flex flex-wrap items-center justify-center gap-3"
         >
           <Button size="lg" asChild className="rounded-full px-6">
-            <a href="#about">Explore My World</a>
+            <a href="#journey">The Journey to Dr.</a>
           </Button>
           <Button
             variant="outline"
@@ -104,6 +104,11 @@ export function Hero() {
           animate="visible"
           className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground sm:text-sm"
         >
+          <span className="flex items-center gap-1.5 font-medium text-foreground/90">
+            <Stethoscope className="size-3.5 text-primary" />
+            Future Doctor
+          </span>
+          <span className="hidden sm:block w-px h-3 bg-white/20" />
           <span className="flex items-center gap-1.5">
             <MapPin className="size-3.5 text-primary" />
             Pune

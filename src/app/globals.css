@@ -97,13 +97,42 @@
 /* Lightbox */
 .lightbox-overlay { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
 
-/* Gradient text */
+/* Gradient text — slowly drifts through teal → cyan for a living feel */
 .gradient-text {
-  background: linear-gradient(135deg, oklch(0.75 0.15 160), oklch(0.7 0.15 200));
+  background: linear-gradient(
+    135deg,
+    oklch(0.75 0.15 160),
+    oklch(0.7 0.15 200),
+    oklch(0.78 0.13 180),
+    oklch(0.75 0.15 160)
+  );
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient-drift 8s ease-in-out infinite;
 }
+
+@keyframes gradient-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-text { animation: none; }
+}
+
+/* Selection + scrollbar match the theme */
+::selection {
+  background: oklch(0.75 0.15 160 / 0.35);
+}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: oklch(0.13 0.01 260); }
+::-webkit-scrollbar-thumb {
+  background: oklch(0.28 0.02 260);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover { background: oklch(0.4 0.05 180); }
 
 /* Noise texture overlay */
 .noise-bg {
