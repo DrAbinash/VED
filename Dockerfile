@@ -1,34 +1,56 @@
 # ============================================================================
-#  Dockerfile — Ved Singh Portfolio (Next.js static export)
+#  Dockerfile — Ved Singh Personal Portfolio
+#  Next.js standalone server (needed for the /admin photo uploads + SQLite).
 #  Optimised for Synology Container Manager.
-#  Lightweight nginx-based setup for static content.
 # ============================================================================
 
-# ---------- Stage 1: static files base ----------
-FROM node:20-slim AS static_base
+# ---------- Stage 1: deps ----------
+FROM node:20-slim AS deps
 WORKDIR /app
+COPY package.json package-lock.json* bun.lock* ./
+RUN npm install
+
+# ---------- Stage 2: builder ----------
+FROM node:20-slim AS builder
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN npx prisma generate && npm run build
 
-# ---------- Stage 2: runner (nginx) ----------
-FROM nginx:alpine AS runner
+# ---------- Stage 3: runner ----------
+FROM node:20-slim AS runner
 WORKDIR /app
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY nginx-default.conf /etc/nginx/conf.d/default.conf
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+ENV DATABASE_URL=file:/app/data/ved.db
+ENV UPLOADS_DIR=/app/data/uploads
 
-# Copy static files from base
-COPY --from=static_base /app /usr/share/nginx/html
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
 
-# Create nginx user if needed
-RUN mkdir -p /var/run/nginx && chmod -R 755 /var/run/nginx
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Expose port
+# Prisma CLI + schema so the entrypoint can create/update the SQLite tables.
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
+
+COPY --chown=nextjs:nodejs docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh \
+    && mkdir -p /app/data/uploads \
+    && chown -R nextjs:nodejs /app/data
+
+USER nextjs
 EXPOSE 3000
+VOLUME ["/app/data"]
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["./docker-entrypoint.sh"]
