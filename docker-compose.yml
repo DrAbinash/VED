@@ -1,3 +1,5 @@
+name: ved
+
 services:
   ved-singh-portfolio:
     container_name: ved-singh-portfolio
