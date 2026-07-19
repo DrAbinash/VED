@@ -1,32 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Camera, ChefHat, ArrowRight, Images } from "lucide-react";
+import { Camera, ChefHat, Images, ArrowRight } from "lucide-react";
 import type { WorkConfig } from "@/lib/work";
 
+// Icon + accent colour per known slug; anything new (Nature, Japan, ...)
+// cycles through the fallback palette below so it still looks intentional.
+const KNOWN_STYLE: Record<string, { icon: typeof Camera; accent: string; chip: string; hover: string }> = {
+  photography: {
+    icon: Camera,
+    accent: "text-primary",
+    chip: "bg-primary/10",
+    hover: "hover:border-primary/40",
+  },
+  foods: {
+    icon: ChefHat,
+    accent: "text-red-400",
+    chip: "bg-red-500/10",
+    hover: "hover:border-red-500/40",
+  },
+};
+
+const FALLBACK_PALETTE = [
+  { accent: "text-amber-400", chip: "bg-amber-500/10", hover: "hover:border-amber-500/40" },
+  { accent: "text-emerald-400", chip: "bg-emerald-500/10", hover: "hover:border-emerald-500/40" },
+  { accent: "text-sky-400", chip: "bg-sky-500/10", hover: "hover:border-sky-500/40" },
+  { accent: "text-fuchsia-400", chip: "bg-fuchsia-500/10", hover: "hover:border-fuchsia-500/40" },
+];
+
 /**
- * Homepage teaser for the two My Work pages. Covers come from the first
- * photo of each collection, so the cards update as Ved uploads new work.
+ * Homepage teaser for the My Work pages. Covers come from the first photo
+ * of each collection, so the cards update as Ved uploads new work. Any
+ * number of collections is supported — Photography and Foods get their
+ * dedicated look, extra sections (Nature, Japan, ...) cycle through a
+ * fallback palette.
  */
 export function MyWork({ work }: { work: WorkConfig }) {
-  const cards = [
-    {
-      href: "/photography",
-      icon: Camera,
-      collection: work.photography,
-      accent: "text-primary",
-      chip: "bg-primary/10",
-      hover: "hover:border-primary/40",
-    },
-    {
-      href: "/foods",
-      icon: ChefHat,
-      collection: work.foods,
-      accent: "text-red-400",
-      chip: "bg-red-500/10",
-      hover: "hover:border-red-500/40",
-    },
-  ];
+  let fallbackIndex = 0;
+  const cards = work.collections.map((collection) => {
+    const known = KNOWN_STYLE[collection.slug];
+    const style = known ?? { icon: Images, ...FALLBACK_PALETTE[fallbackIndex++ % FALLBACK_PALETTE.length] };
+    return { href: `/work/${collection.slug}`, collection, ...style };
+  });
 
   return (
     <section id="work" className="relative py-24 sm:py-32">
@@ -42,11 +57,11 @@ export function MyWork({ work }: { work: WorkConfig }) {
             <h2 className="text-3xl font-bold sm:text-4xl">My Work</h2>
           </div>
           <p className="mt-2 max-w-md text-muted-foreground">
-            Two collections, always growing — pick a door.
+            {cards.length} collection{cards.length === 1 ? "" : "s"}, always growing — pick a door.
           </p>
         </motion.div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map(({ href, icon: Icon, collection, accent, chip, hover }, i) => {
             const cover = collection.photos[0]?.src;
             return (

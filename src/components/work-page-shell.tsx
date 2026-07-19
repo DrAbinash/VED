@@ -1,14 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight, Camera, ChefHat } from "lucide-react";
+import { ArrowLeft, ArrowRight, Camera, ChefHat, Images } from "lucide-react";
 import type { WorkCollection } from "@/lib/work";
 import { WorkGallery } from "@/components/work-gallery";
 import { Navbar } from "@/components/sections/navbar";
 import { Footer } from "@/components/sections/footer";
 
 // Icon names, not components, cross the server→client boundary.
-const ICONS = { camera: Camera, chefHat: ChefHat } as const;
+const ICONS = { camera: Camera, chefHat: ChefHat, images: Images } as const;
+
+/** Photography/Foods get their dedicated icons; anything else gets a generic one. */
+export function iconForSlug(slug: string): keyof typeof ICONS {
+  if (slug === "photography") return "camera";
+  if (slug === "foods") return "chefHat";
+  return "images";
+}
 
 /** Shared frame for the Photography / Foods pages. */
 export function WorkPageShell({

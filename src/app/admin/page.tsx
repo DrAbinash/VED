@@ -12,12 +12,14 @@ import {
   AlertTriangle,
   Camera,
   ChefHat,
+  Images,
   Upload,
   Trash2,
   ChevronUp,
   ChevronDown,
   LayoutGrid,
   Rows3,
+  Plus,
 } from "lucide-react";
 
 import type { WorkConfig, WorkCollection } from "@/lib/work";
@@ -28,12 +30,31 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
+const TAB_ICON: Record<string, typeof Camera> = { photography: Camera, foods: ChefHat };
+
+function slugify(title: string): string {
+  const base = title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return base || "section";
+}
+
+function uniqueSlug(slug: string, taken: Set<string>): string {
+  if (!taken.has(slug)) return slug;
+  let n = 2;
+  while (taken.has(`${slug}-${n}`)) n++;
+  return `${slug}-${n}`;
+}
+
 type AuthState = "checking" | "login" | "ready";
 
 export default function AdminPage() {
   const [authState, setAuthState] = React.useState<AuthState>("checking");
   const [usingDefaultPassword, setUsingDefaultPassword] = React.useState(false);
   const [work, setWork] = React.useState<WorkConfig | null>(null);
+  const [activeSlug, setActiveSlug] = React.useState<string | null>(null);
   const [saving, setSaving] = React.useState(false);
   const [saveMessage, setSaveMessage] = React.useState<string | null>(null);
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -46,6 +67,7 @@ export default function AdminPage() {
     }
     const data = (await res.json()) as { ok: boolean; work: WorkConfig };
     setWork(data.work);
+    setActiveSlug(data.work.collections[0]?.slug ?? null);
     setAuthState("ready");
   }, []);
 
@@ -79,6 +101,37 @@ export default function AdminPage() {
     setSaveMessage(null);
   }
 
+  function handleAddSection() {
+    const title = window.prompt("Name for the new section (e.g. Nature, Japan)?")?.trim();
+    if (!title) return;
+    const taken = new Set(work?.collections.map((c) => c.slug) ?? []);
+    const slug = uniqueSlug(slugify(title), taken);
+    const collection: WorkCollection = { slug, title, subtitle: "", layout: "masonry", photos: [] };
+    mutate((d) => d.collections.push(collection));
+    setActiveSlug(slug);
+  }
+
+  function handleDeleteSection(slug: string) {
+    if (!work || work.collections.length <= 1) return;
+    const collection = work.collections.find((c) => c.slug === slug);
+    if (!collection) return;
+    if (
+      !window.confirm(
+        `Remove the "${collection.title}" section? Its photos stay uploaded but the page and its link disappear once you save.`
+      )
+    ) {
+      return;
+    }
+    mutate((d) => {
+      d.collections = d.collections.filter((c) => c.slug !== slug);
+    });
+    setActiveSlug((current) => {
+      if (current !== slug) return current;
+      const remaining = work.collections.filter((c) => c.slug !== slug);
+      return remaining[0]?.slug ?? null;
+    });
+  }
+
   async function handleSave() {
     if (!work || saving) return;
     setSaving(true);
@@ -106,7 +159,7 @@ export default function AdminPage() {
   async function handleReset() {
     if (
       !window.confirm(
-        "This removes ALL your edits and returns both pages to the starter photos. Uploaded photos stay saved but will no longer be shown. Continue?"
+        "This removes ALL your sections and edits, returning to just the two starter collections (Photography & Foods). Uploaded photos stay saved but will no longer be shown. Continue?"
       )
     ) {
       return;
@@ -115,7 +168,7 @@ export default function AdminPage() {
     const res = await fetch("/api/admin/settings", { method: "DELETE" });
     if (res.ok) {
       await loadWork();
-      setSaveMessage("Pages returned to the original photos.");
+      setSaveMessage("Reset to the original sections and photos.");
     } else {
       setErrorMessage("Could not reset. Please try again.");
     }
@@ -139,7 +192,7 @@ export default function AdminPage() {
     return <LoginScreen onSuccess={loadWork} usingDefaultPassword={usingDefaultPassword} />;
   }
 
-  if (!work) return null;
+  if (!work || !activeSlug) return null;
 
   return (
     <div className="min-h-screen bg-background pb-28">
@@ -149,14 +202,14 @@ export default function AdminPage() {
           <div>
             <h1 className="text-lg font-bold">My Work — Photo Manager</h1>
             <p className="text-xs text-muted-foreground">
-              Upload and arrange the photos on your Photography and Foods pages
+              Upload and arrange the photos across your sections
             </p>
           </div>
           <div className="flex items-center gap-2">
             <Button asChild variant="outline" size="sm">
-              <a href="/photography" target="_blank" rel="noreferrer">
+              <a href={`/work/${activeSlug}`} target="_blank" rel="noreferrer">
                 <ExternalLink className="mr-1.5 size-4" />
-                View pages
+                View page
               </a>
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -179,25 +232,52 @@ export default function AdminPage() {
           </div>
         )}
 
-        <Tabs defaultValue="photography">
-          <TabsList className="mb-4">
-            <TabsTrigger value="photography" className="gap-1.5">
-              <Camera className="size-4" />
-              Photography
-            </TabsTrigger>
-            <TabsTrigger value="foods" className="gap-1.5">
-              <ChefHat className="size-4" />
-              Foods
-            </TabsTrigger>
-          </TabsList>
+        <Tabs value={activeSlug} onValueChange={setActiveSlug}>
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <TabsList>
+              {work.collections.map((collection) => {
+                const Icon = TAB_ICON[collection.slug] ?? Images;
+                return (
+                  <TabsTrigger key={collection.slug} value={collection.slug} className="gap-1.5">
+                    <Icon className="size-4" />
+                    {collection.title}
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+            <Button type="button" variant="outline" size="sm" onClick={handleAddSection}>
+              <Plus className="mr-1.5 size-4" />
+              Add section
+            </Button>
+          </div>
 
-          {(["photography", "foods"] as const).map((key) => (
-            <TabsContent key={key} value={key}>
+          {work.collections.map((collection, i) => (
+            <TabsContent key={collection.slug} value={collection.slug}>
               <CollectionEditor
-                collection={work[key]}
-                onChange={(edit) => mutate((d) => edit(d[key]))}
+                collection={collection}
+                onChange={(edit) =>
+                  mutate((d) => edit(d.collections[i]))
+                }
                 onError={setErrorMessage}
               />
+              <div className="mt-4 flex justify-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  disabled={work.collections.length <= 1}
+                  className="text-red-400 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-40"
+                  onClick={() => handleDeleteSection(collection.slug)}
+                  title={
+                    work.collections.length <= 1
+                      ? "At least one section must stay"
+                      : "Remove this section"
+                  }
+                >
+                  <Trash2 className="mr-1.5 size-4" />
+                  Remove &quot;{collection.title}&quot; section
+                </Button>
+              </div>
             </TabsContent>
           ))}
         </Tabs>
@@ -212,7 +292,7 @@ export default function AdminPage() {
             onClick={handleReset}
           >
             <RotateCcw className="mr-2 size-4" />
-            Reset both pages to the original photos
+            Reset to the original sections and photos
           </Button>
         </div>
       </main>
@@ -302,17 +382,17 @@ function CollectionEditor({
         <p className="mb-3 text-sm font-semibold">Page heading</p>
         <div className="grid gap-3">
           <div className="space-y-1.5">
-            <Label htmlFor={`${collection.title}-title`}>Title</Label>
+            <Label htmlFor={`${collection.slug}-title`}>Title</Label>
             <Input
-              id={`${collection.title}-title`}
+              id={`${collection.slug}-title`}
               value={collection.title}
               onChange={(e) => onChange((c) => (c.title = e.target.value))}
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor={`${collection.title}-subtitle`}>One-line intro</Label>
+            <Label htmlFor={`${collection.slug}-subtitle`}>One-line intro</Label>
             <Textarea
-              id={`${collection.title}-subtitle`}
+              id={`${collection.slug}-subtitle`}
               rows={2}
               value={collection.subtitle}
               onChange={(e) => onChange((c) => (c.subtitle = e.target.value))}
