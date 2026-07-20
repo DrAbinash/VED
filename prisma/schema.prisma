@@ -6,7 +6,11 @@
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "debian-openssl-3.0.x"]
+  // Single deterministic target instead of ["native", "debian-openssl-3.0.x"]:
+  // the builder stage now has openssl installed so "native" resolves to the
+  // same engine anyway, and listing just one avoids a second download from
+  // binaries.prisma.sh (which has been flaky on this host's network).
+  binaryTargets = ["debian-openssl-3.0.x"]
 }
 
 datasource db {

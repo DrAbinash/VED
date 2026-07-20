@@ -16,6 +16,14 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# openssl must be present before `prisma generate` runs, so its "native"
+# target auto-detects correctly as debian-openssl-3.0.x (matching the
+# runner stage) instead of guessing wrong and needing a second engine
+# binary downloaded for an explicit non-native target.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate && npm run build
