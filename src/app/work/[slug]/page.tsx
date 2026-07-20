@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getWorkConfig } from "@/lib/work";
+import { getWorkConfig, iconForSlug } from "@/lib/work";
 import { siteConfig } from "@/config/site.config";
-import { WorkPageShell, iconForSlug } from "@/components/work-page-shell";
+import { WorkPageShell } from "@/components/work-page-shell";
 
 export async function generateMetadata({
   params,

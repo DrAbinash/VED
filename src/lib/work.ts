@@ -180,3 +180,16 @@ export async function saveWorkConfig(config: Record<string, unknown>): Promise<v
 export async function resetWorkConfig(): Promise<void> {
   await db.siteSetting.deleteMany({ where: { id: "work" } });
 }
+
+/**
+ * Icon key per collection slug — plain logic, not a component, so it can be
+ * called from server components. (The actual icon components live in the
+ * client-side WorkPageShell/MyWork, which map these keys to lucide icons.)
+ */
+export type WorkIconKey = "camera" | "chefHat" | "images";
+
+export function iconForSlug(slug: string): WorkIconKey {
+  if (slug === "photography") return "camera";
+  if (slug === "foods") return "chefHat";
+  return "images";
+}
